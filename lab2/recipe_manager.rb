@@ -86,6 +86,23 @@ class RecipeManager
       @collection.select { |_, r| r.difficulty.downcase == difficulty.downcase }
   end
 
+  def load_from_json(filename)
+    return unless File.exist?(filename)
+    data = JSON.parse(File.read(filename), symbolize_names: true)
+    
+    @collection = {}
+    return if data.nil? || !data.is_a?(Hash)
+
+    data.each do |id, recipe_hash|
+      @collection[id.to_s.to_i] = Recipe.from_h(id, recipe_hash)
+    end
+    
+    puts "Дані успішно завантажено з JSON (#{filename})"
+  rescue => e
+    puts "Помилка при завантаженні JSON: #{e.message}"
+    @collection = {}
+  end
+
   def save_to_json(filename)
       hash_info = @collection.transform_values(&:to_h)
       File.write(filename, JSON.pretty_generate(hash_info))
@@ -118,23 +135,4 @@ class RecipeManager
   rescue => e
     puts "Error during saving: #{e.message}"
   end
-
-  def load_from_yaml(filename)
-    return unless File.exist?(filename)
-    
-    data = YAML.unsafe_load_file(filename)
-    @collection = {}
-    
-    return unless data.is_a?(Hash)
-
-    data.each do |id, recipe_hash|
-      actual_hash = recipe_hash.is_a?(Hash) ? recipe_hash : recipe_hash.to_h
-      @collection[id.to_s.to_i] = Recipe.from_h(id, actual_hash)
-    end
-    puts "Loaded from #{filename}"
-  rescue => e
-    puts "Error loading YAML: #{e.message}"
-    @collection = {}
-  end
-
 end
