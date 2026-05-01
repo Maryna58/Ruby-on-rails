@@ -3,7 +3,7 @@ require 'date'
 DIFFICULTIES = ['easy', 'medium', 'hard']
 
 class Recipe
-  attr_reader :id, :servings, :difficulty
+  attr_reader :servings, :difficulty
   attr_accessor :title, :ingredients, :steps, :category, :cooking_time, :created_at, :published
 
   def difficulty=(level)
@@ -14,15 +14,14 @@ class Recipe
   end
 
   def servings=(num)
-    val = num.to_s.strip
-    unless val.match?(/^\d+$/) && val.to_i > 0
-      raise ArgumentError, "Кількість порцій має містити ТІЛЬКИ цифри."
+    val = num.to_i
+    if val <= 0
+      raise ArgumentError, "Кількість порцій має бути додатнім числом."
     end
-    @servings = val.to_i
+    @servings = val
   end
 
-  def initialize(id:, title:, ingredients: [], steps: [], category:, cooking_time:, servings:, difficulty:, created_at: Date.today.to_s, published: false)
-    @id = id
+  def initialize(title:, ingredients: [], steps: [], category:, cooking_time:, servings:, difficulty:, created_at: Date.today.to_s, published: false)
     @title = title
     @ingredients = ingredients
     @steps = steps
@@ -48,9 +47,8 @@ class Recipe
     }
   end
 
-  def self.from_h(id, hash)
+  def self.from_h(hash)
     new(
-      id: id.to_i,
       title: hash[:title],
       ingredients: hash[:ingredients],
       steps: hash[:steps],
