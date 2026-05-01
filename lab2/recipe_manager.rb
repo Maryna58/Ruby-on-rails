@@ -86,20 +86,23 @@ class RecipeManager
       @collection.select { |_, r| r.difficulty.downcase == difficulty.downcase }
   end
 
-  def load_from_json(filename)
-    return unless File.exist?(filename)
+  
+def load_from_json(filename)
+    return unless File.exist?(filename) && !File.read(filename).strip.empty?
+
     data = JSON.parse(File.read(filename), symbolize_names: true)
-    
     @collection = {}
-    return if data.nil? || !data.is_a?(Hash)
+    
+    return unless data.is_a?(Hash)
 
     data.each do |id, recipe_hash|
-      @collection[id.to_s.to_i] = Recipe.from_h(id, recipe_hash)
+      numeric_id = id.to_s.to_i 
+      @collection[numeric_id] = Recipe.from_h(numeric_id, recipe_hash)
     end
     
-    puts "Дані успішно завантажено з JSON (#{filename})"
+    puts "Loaded from #{filename}"
   rescue => e
-    puts "Помилка при завантаженні JSON: #{e.message}"
+    puts "Error loading JSON from #{filename}: #{e.message}"
     @collection = {}
   end
 
