@@ -1,0 +1,85 @@
+---
+1:
+  :title: Борщ
+  :ingredients:
+  - буряк
+  - капуста
+  - морква
+  - м'ясо
+  :steps:
+  - зварити бульйон
+  - нарізати овочі
+  - зробити зажарку
+  - змішати та варити
+  :category: Супи
+  :cooking_time: '90'
+  :servings: 6
+  :difficulty: medium
+  :created_at: '2026-04-30'
+  :published: true
+2:
+  :title: Вареники
+  :ingredients:
+  - борошно
+  - картопля
+  - цибуля
+  :steps:
+  - замісити тісто
+  - приготувати начинку
+  - зліпити
+  :category: Основні страви
+  :cooking_time: '90'
+  :servings: 6
+  :difficulty: medium
+  :created_at: '2026-04-30'
+  :published: true
+3:
+  :title: Сирники
+  :ingredients:
+  - кисломолочний сир
+  - яйця
+  - цукор
+  - борошно
+  :steps:
+  - перетерти сир
+  - додати яйця та цукор
+  - сформувати сирники
+  - обсмажити
+  :category: Сніданки
+  :cooking_time: '30'
+  :servings: 2
+  :difficulty: easy
+  :created_at: '2026-04-30'
+  :published: true
+4:
+  :title: fvddcd
+  :ingredients:
+  - vfdfdc
+  - dcsc
+  - ddxs fedce
+  - scdsd
+  :steps:
+  - yhbnn fjnn, dccs
+  - dcdxdcdxc
+  - dcds vcdsv
+  :category: Супи
+  :cooking_time: '60'
+  :servings: 3
+  :difficulty: easy
+  :created_at: '2026-04-30'
+  :published: true
+5:
+  :title: амор
+  :ingredients:
+  - аомр
+  - xthg
+  :steps:
+  - cjg
+  - jodfxxdf
+  - vjhxgf
+  :category: Супи
+  :cooking_time: '70'
+  :servings: 4
+  :difficulty: easy
+  :created_at: '2026-05-01'
+  :published: false
