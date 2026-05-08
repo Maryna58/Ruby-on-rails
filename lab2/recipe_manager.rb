@@ -1,8 +1,9 @@
 require 'json'
 require 'yaml'
+require 'date'
 
 class RecipeManager
-  attr_accessor   :collection
+  attr_accessor :collection
 
   def initialize
     @collection = {}
@@ -12,40 +13,12 @@ class RecipeManager
     @collection.each_value(&block)
   end
 
-  def add(title:, ingredients: [], steps: [], category:, cooking_time:, servings:, difficulty:, created_at: Date.today.to_s, published: false)
-
-    unless valid_recipe_data?(title, category, cooking_time, difficulty)
-      return nil
-    end
+  def add(recipe)
+    return nil unless recipe.is_a?(Recipe)
 
     id = (@collection.keys.max || 0) + 1
-    @collection[id] = Recipe.new(
-      id: id,
-      title: title,
-      ingredients: ingredients,
-      steps: steps,
-      category: category,
-      cooking_time: cooking_time,
-      servings: servings,
-      difficulty: difficulty,
-      created_at: created_at,
-      published: published
-    )
-  end
-
-  def valid_recipe_data?(*args)
-    is_invalid = args.any? do |arg|
-      if arg.is_a?(Array)
-        arg.empty? || arg.all? { |item| item.to_s.strip.empty? }
-      else
-        arg.to_s.strip.empty?
-      end
-    end
-    if is_invalid
-      puts "Error: All fields must be filled out!"
-      return false
-    end
-    true
+    @collection[id] = recipe
+    id
   end
 
   def edit_recipe(id, new_info)
@@ -56,7 +29,7 @@ class RecipeManager
         recipe.public_send(setter, value) if recipe.respond_to?(setter)
       end
     else
-      puts  "Recipe with ID #{id} not found"
+      puts "Recipe with ID #{id} not found"
     end
   end
 
@@ -64,66 +37,51 @@ class RecipeManager
     @collection.delete(id) || puts("Recipe with ID #{id} not found")
   end
 
-  def list_recipes
+ def list_recipes
     if @collection.empty?
       puts "No recipes found"
     else
       @collection.each do |id, r|
-        puts "[#{id}] #{r.title} | #{r.category} | #{r.cooking_time} | #{r.servings} | #{r.difficulty} | #{r.published}"
+        puts "[#{id}] #{r}"
       end
     end
   end
 
   def find_by_title(part_title)
-      @collection.select { |_, r| r.title.downcase.include?(part_title.downcase) }
+    @collection.select { |_, r| r.title.downcase.include?(part_title.downcase) }
   end
 
   def filter_by_category(category)
-      @collection.select { |_, r| r.category.downcase == category.downcase }
+    @collection.select { |_, r| r.category.downcase == category.downcase }
   end
 
   def filter_by_difficulty(difficulty)
-      @collection.select { |_, r| r.difficulty.downcase == difficulty.downcase }
+    @collection.select { |_, r| r.difficulty.downcase == difficulty.downcase }
   end
 
-  
-def load_from_json(filename)
+  def load_from_json(filename)
     return unless File.exist?(filename) && !File.read(filename).strip.empty?
-
     data = JSON.parse(File.read(filename), symbolize_names: true)
     @collection = {}
-    
     return unless data.is_a?(Hash)
 
     data.each do |id, recipe_hash|
-      numeric_id = id.to_s.to_i 
-      @collection[numeric_id] = Recipe.from_h(numeric_id, recipe_hash)
+      @collection[id.to_s.to_i] = Recipe.from_h(recipe_hash)
     end
-    
     puts "Loaded from #{filename}"
   rescue => e
-    puts "Error loading JSON from #{filename}: #{e.message}"
+    puts "Error loading JSON: #{e.message}"
     @collection = {}
-  end
-
-  def save_to_json(filename)
-      hash_info = @collection.transform_values(&:to_h)
-      File.write(filename, JSON.pretty_generate(hash_info))
-      puts "Saved in #{filename}"
-  rescue => e
-      puts "Error during saving: #{e.message}"
   end
 
   def load_from_yaml(filename)
     return unless File.exist?(filename)
-
-    data = YAML.load_file(filename) 
+    data = YAML.load_file(filename)
     @collection = {}
-    
     return if data.nil? || !data.is_a?(Hash)
 
     data.each do |id, recipe_hash|
-      @collection[id.to_s.to_i] = Recipe.from_h(id, recipe_hash)
+      @collection[id.to_s.to_i] = Recipe.from_h(recipe_hash)
     end
     puts "Loaded #{data.keys.size} recipes from #{filename}"
   rescue => e
@@ -131,11 +89,15 @@ def load_from_json(filename)
     @collection = {}
   end
 
+  def save_to_json(filename)
+    hash_info = @collection.transform_values(&:to_h)
+    File.write(filename, JSON.pretty_generate(hash_info))
+    puts "Saved in #{filename}"
+  end
+
   def save_to_yaml(filename)
     hash_info = @collection.transform_values(&:to_h)
     File.write(filename, hash_info.to_yaml)
     puts "Saved in #{filename}"
-  rescue => e
-    puts "Error during saving: #{e.message}"
   end
 end

@@ -49,7 +49,7 @@ def handle_add(manager)
   end
 
   begin
-    result = manager.add(
+    recipe = Recipe.new(
       title: title,
       ingredients: ingredients,
       steps: steps,
@@ -60,7 +60,8 @@ def handle_add(manager)
       published: (published_in == 'y')
     )
   
-    if result
+    # 2. ПЕРЕДАЄМО ГОТОВИЙ ОБ'ЄКТ У МЕНЕДЖЕР
+    if manager.add(recipe)
       puts "Successfully added '#{title}' to the collection!"
     end
   rescue ArgumentError => e
@@ -70,7 +71,7 @@ end
 
 def handle_edit(manager)
   id = prompt("Enter recipe id to edit").to_i
-  recipe = manager.collection[id]
+  reipe = manager.collection[id]
 
   unless recipe
     puts "Recipe id #{id} not found."

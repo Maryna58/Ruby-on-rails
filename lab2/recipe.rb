@@ -6,6 +6,21 @@ class Recipe
   attr_reader :servings, :difficulty
   attr_accessor :title, :ingredients, :steps, :category, :cooking_time, :created_at, :published
 
+  def title=(val)
+    raise ArgumentError, "Title cannot be empty!" if val.to_s.strip.empty?
+    @title = val
+  end
+
+  def category=(val)
+    raise ArgumentError, "Category cannot be empty!" if val.to_s.strip.empty?
+    @category = val
+  end
+
+  def cooking_time=(val)
+    raise ArgumentError, "Cooking time cannot be empty!" if val.to_s.strip.empty?
+    @cooking_time = val
+  end
+
   def difficulty=(level)
     unless DIFFICULTIES.include?(level.to_s.downcase.strip)
       raise ArgumentError, "Невірна складність. Доступні варіанти: #{DIFFICULTIES.join(', ')}"
@@ -22,11 +37,11 @@ class Recipe
   end
 
   def initialize(title:, ingredients: [], steps: [], category:, cooking_time:, servings:, difficulty:, created_at: Date.today.to_s, published: false)
-    @title = title
+    self.title = title
     @ingredients = ingredients
     @steps = steps
-    @category = category
-    @cooking_time = cooking_time
+    self.category = category
+    self.cooking_time = cooking_time
     self.servings = servings
     self.difficulty = difficulty
     @created_at = created_at
@@ -50,14 +65,18 @@ class Recipe
   def self.from_h(hash)
     new(
       title: hash[:title],
-      ingredients: hash[:ingredients],
-      steps: hash[:steps],
+      ingredients: hash[:ingredients] || [],
+      steps: hash[:steps] || [],
       category: hash[:category],
       cooking_time: hash[:cooking_time],
       servings: hash[:servings],
       difficulty: hash[:difficulty],
-      created_at: hash[:created_at],
-      published: hash[:published]
+      created_at: hash[:created_at] || Date.today.to_s,
+      published: hash[:published] || false
     )
+  end
+
+  def to_s
+    "#{@title} | #{@category} | #{@cooking_time} | #{@servings} | #{@difficulty} | #{@published}"
   end
 end
