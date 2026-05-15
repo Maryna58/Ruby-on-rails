@@ -1,0 +1,36 @@
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h1>Опубліковані рецепти</h1>
+  <%= link_to "Додати новий рецепт", new_recipe_path, class: "btn btn-success" %>
+</div>
+
+<% if @recipes.any? %>
+  <div class="row row-cols-1 row-cols-md-3 g-4">
+    <% @recipes.each do |recipe| %>
+      <div class="col">
+        <div class="card h-100 shadow-sm">
+          
+          <div class="card-header bg-light d-flex justify-content-between align-items-center">
+            <span class="badge bg-secondary"><%= recipe.category&.name || 'Без категорії' %></span>
+            <%= difficulty_badge(recipe) %>
+          </div>
+          
+          <div class="card-body">
+            <h5 class="card-title"><%= recipe.title %></h5>
+            <p class="card-text text-muted mb-2">
+              <small>⏱ Час: <%= recipe.cooking_time %> хв.</small>
+            </p>
+          </div>
+          
+          <div class="card-footer bg-white border-top-0">
+            <%= link_to "Переглянути", recipe, class: "btn btn-outline-primary w-100" %>
+          </div>
+          
+        </div>
+      </div>
+    <% end %>
+  </div>
+<% else %>
+  <div class="alert alert-info mt-3" role="alert">
+    Наразі немає жодного опублікованого рецепту. Зробіть це першим!
+  </div>
+<% end %>

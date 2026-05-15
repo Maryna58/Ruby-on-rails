@@ -1,0 +1,14 @@
+<%= turbo_frame_tag category do %>
+  <div class="list-group-item list-group-item-action d-flex justify-content-between align-items-center p-3">
+    <div class="fs-5 fw-bold text-dark">
+      <%= category.name %>
+    </div>
+
+    <div class="btn-group" role="group">
+      <%= link_to "Редагувати", edit_category_path(category), class: "btn btn-sm btn-outline-warning" %>
+      <%= button_to "Видалити", category, method: :delete, 
+                    data: { turbo_confirm: "Ви впевнені? Це видалить усі рецепти в цій категорії!" }, 
+                    class: "btn btn-sm btn-outline-danger" %>
+    </div>
+  </div>
+<% end %>

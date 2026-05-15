@@ -1,0 +1,30 @@
+<div class="card mt-3">
+  <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+    <h2 class="mb-0"><%= @recipe.title %></h2>
+    <%= difficulty_badge(@recipe) %>
+  </div>
+  
+  <div class="card-body">
+    <p><strong>Категорія:</strong> <%= @recipe.category&.name %></p>
+    <p><strong>Час приготування:</strong> <%= @recipe.cooking_time %> хв.</p>
+    <p><strong>Порції:</strong> <%= @recipe.servings %></p>
+    <p><strong>Статус:</strong> 
+      <% if @recipe.published %>
+        <span class="text-success fw-bold">Опубліковано</span>
+      <% else %>
+        <span class="text-muted">Чернетка</span>
+      <% end %>
+    </p>
+
+    <h4 class="mt-4">Інгредієнти:</h4>
+    <p class="card-text"><%= @recipe.ingredients %></p>
+
+    <h4 class="mt-4">Кроки приготування:</h4>
+    <p class="card-text"><%= @recipe.steps %></p>
+  </div>
+  
+  <div class="card-footer">
+    <%= link_to "Редагувати", edit_recipe_path(@recipe), class: "btn btn-warning" %>
+    <%= link_to "Назад до списку", recipes_path, class: "btn btn-secondary" %>
+  </div>
+</div>

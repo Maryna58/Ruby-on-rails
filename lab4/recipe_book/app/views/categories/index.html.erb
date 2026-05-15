@@ -1,0 +1,12 @@
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h1>Категорії</h1>
+  <%= link_to "Додати нову категорію", new_category_path, class: "btn btn-success" %>
+</div>
+
+<div id="categories" class="list-group shadow-sm">
+  <%= render @categories %>
+</div>
+
+<div class="mt-4">
+  <%= link_to "← Повернутися до рецептів", recipes_path, class: "btn btn-outline-secondary" %>
+</div>

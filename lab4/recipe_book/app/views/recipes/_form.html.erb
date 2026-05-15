@@ -1,0 +1,49 @@
+<%= form_with(model: recipe, class: "needs-validation") do |form| %>
+  <% if recipe.errors.any? %>
+    <div class="alert alert-danger">
+      <h2><%= pluralize(recipe.errors.count, "помилка", "помилки", "помилок") %> не дозволяють зберегти рецепт:</h2>
+      <ul>
+        <% recipe.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="mb-3">
+    <%= form.label :title, "Назва рецепту", class: "form-label" %>
+    <%= form.text_field :title, class: "form-control" %>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :category_id, "Категорія", class: "form-label" %>
+    <%= form.select :category_id, Category.pluck(:name, :id), { prompt: "Оберіть категорію" }, class: "form-select" %>
+  </div>
+
+  <div class="row">
+    <div class="col-md-6 mb-3">
+      <%= form.label :cooking_time, "Час приготування (хв)", class: "form-label" %>
+      <%= form.number_field :cooking_time, class: "form-control" %>
+    </div>
+
+    <div class="col-md-6 mb-3">
+      <%= form.label :servings, "Кількість порцій", class: "form-label" %>
+      <%= form.number_field :servings, class: "form-control" %>
+    </div>
+  </div>
+
+  <div class="mb-3">
+    <%= form.label :difficulty, "Складність", class: "form-label" %>
+    <%= form.select :difficulty, Recipe.difficulties.keys, { prompt: "Оберіть складність" }, class: "form-select" %>
+  </div>
+
+  <div class="mb-3 form-check">
+    <%= form.check_box :published, class: "form-check-input" %>
+    <%= form.label :published, "Опублікувати", class: "form-check-label" %>
+  </div>
+
+  <div>
+    <%= form.submit "Зберегти", class: "btn btn-primary" %>
+    <%= link_to "Назад", recipes_path, class: "btn btn-secondary ms-2" %>
+  </div>
+<% end %>

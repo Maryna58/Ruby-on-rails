@@ -1,0 +1,29 @@
+<h1>Рецепти</h1>
+<table class="table table-striped table-hover mt-3">
+  <thead class="table-dark">
+    <tr>
+      <th>Назва</th>
+      <th>Категорія</th>
+      <th>Час (хв)</th>
+      <th>Складність</th>
+      <th>Статус</th>
+      <th>Дії</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @recipes.each do |recipe| %>
+      <tr>
+        <td><%= recipe.title %></td>
+        <td><%= recipe.category&.name %></td>
+        <td><%= recipe.cooking_time %></td>
+        <td><%= difficulty_badge(recipe) %></td>
+        <td><%= recipe.published ? 'Опубліковано' : 'Чернетка' %></td>
+        <td>
+          <%= link_to "Переглянути", recipe, class: "btn btn-sm btn-outline-primary" %>
+          <%= link_to "Редагувати", edit_recipe_path(recipe), class: "btn btn-sm btn-outline-warning" %>
+          <%= link_to "Видалити", recipe, data: { turbo_method: :delete, turbo_confirm: "Ви впевнені?" }, class: "btn btn-sm btn-danger" %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
