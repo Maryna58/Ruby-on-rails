@@ -1,12 +1,13 @@
-<% content_for :title, "Editing category" %>
+<%= turbo_frame_tag @category do %>
+  <div style="margin-bottom: 10px; padding: 10px; border: 2px solid;">
+    
+    <strong>Редагування:</strong>
+    
+    <%= render "form", category: @category %>
+    
+    <div style="margin-top: 10px;">
+      <%= link_to "Скасувати", categories_path, style: "text-decoration: none; font-size: 14px;" %>
+    </div>
 
-<h1>Editing category</h1>
-
-<%= render "form", category: @category %>
-
-<br>
-
-<div>
-  <%= link_to "Show this category", @category %> |
-  <%= link_to "Back to categories", categories_path %>
-</div>
+  </div>
+<% end %>

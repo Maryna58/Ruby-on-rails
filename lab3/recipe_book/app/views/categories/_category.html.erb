@@ -1,12 +1,14 @@
-<div id="<%= dom_id category %>">
-  <div>
-    <strong>Name:</strong>
-    <%= category.name %>
-  </div>
+<%= turbo_frame_tag category do %>
+  <div style="margin-bottom: 10px; padding: 10px; border: 1px solid #ddd; border-radius: 5px; display: flex; justify-content: space-between; align-items: center; background-color: #f9f9f9;">
+    
+    <div style="font-size: 18px;">
+      <strong><%= category.name %></strong>
+    </div>
 
-  <div>
-    <strong>Description:</strong>
-    <%= category.description %>
-  </div>
+    <div style="display: flex; gap: 15px; align-items: center;">
+      <%= link_to "Редагувати", edit_category_path(category) %>
+      <%= button_to "Видалити", category, method: :delete %>
+    </div>
 
-</div>
+  </div>
+<% end %>

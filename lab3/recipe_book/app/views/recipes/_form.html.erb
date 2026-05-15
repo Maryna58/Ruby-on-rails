@@ -1,0 +1,58 @@
+<%= form_with(model: recipe) do |form| %> <% if recipe.errors.any? %>
+<div style="color: red">
+  <h2>Помилки:</h2>
+  <ul>
+    <% recipe.errors.each do |error| %>
+    <li><%= error.full_message %></li>
+    <% end %>
+  </ul>
+</div>
+<% end %>
+
+<div>
+  <%= form.label :title, "Назва рецепту" %><br />
+  <%= form.text_field :title %>
+</div>
+
+<div>
+  <%= form.label :category_id, "Категорія" %><br />
+  <%= form.select :category_id, Category.pluck(:name, :id), prompt: "Оберіть
+  категорію" %>
+</div>
+
+<div>
+  <%= form.label :difficulty, "Складність" %><br />
+  <%= form.select :difficulty, Recipe.difficulties.keys.map { |d| [d.titleize,
+  d] } %>
+</div>
+
+<div>
+  <%= form.label :ingredients, "Інгредієнти" %><br />
+  <%= form.text_area :ingredients %>
+</div>
+
+<div>
+  <%= form.label :steps, "Кроки приготування" %><br />
+  <%= form.text_area :steps %>
+</div>
+
+<div>
+  <%= form.label :cooking_time, "Час приготування (у хвилинах)" %><br />
+  <%= form.number_field :cooking_time %>
+</div>
+
+<div>
+  <%= form.label :servings, "Кількість порцій" %><br />
+  <%= form.number_field :servings %>
+</div>
+
+<div>
+  <%= form.label :published, "Опублікувати одразу?" %><br />
+  <%= form.check_box :published %>
+</div>
+
+<div>
+  <br />
+  <%= form.submit "Зберегти рецепт" %>
+</div>
+<% end %>

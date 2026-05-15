@@ -1,0 +1,16 @@
+<h1><%= @recipe.title %></h1>
+
+<p><strong>Категорія:</strong> <%= @recipe.category&.name %></p>
+<p><strong>Складність:</strong> <%= @recipe.difficulty %></p>
+<p><strong>Час приготування:</strong> <%= @recipe.cooking_time %> хв.</p>
+<p><strong>Порції:</strong> <%= @recipe.servings %></p>
+<p><strong>Статус:</strong> <%= @recipe.published ? "Опубліковано" : "Чернетка" %></p>
+
+<h3>Інгредієнти:</h3>
+<p><%= @recipe.ingredients %></p>
+
+<h3>Кроки приготування:</h3>
+<p><%= @recipe.steps %></p>
+
+<%= link_to "Редагувати", edit_recipe_path(@recipe) %> |
+<%= link_to "Назад до списку", recipes_path %>

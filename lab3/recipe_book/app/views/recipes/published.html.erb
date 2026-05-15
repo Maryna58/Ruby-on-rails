@@ -1,0 +1,17 @@
+<h1>Опубліковані рецепти</h1>
+
+<%= link_to "Всі рецепти", recipes_path %> | <%= link_to "Додати новий рецепт", new_recipe_path %>
+
+<hr />
+
+<ul>
+  <% @recipes.each do |recipe| %>
+    <li>
+      <strong><%= link_to recipe.title, recipe %></strong>
+      <br />
+      Категорія: <%= recipe.category&.name || 'Без категорії' %> | 
+      Складність: <%= recipe.difficulty %>
+    </li>
+    <br />
+  <% end %>
+</ul>

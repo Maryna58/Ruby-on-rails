@@ -1,0 +1,25 @@
+<h1>Рецепти</h1>
+
+<%= link_to "Додати новий рецепт", new_recipe_path %> | 
+<%= link_to "Керування категоріями", categories_path %> |
+<%= link_to "Тільки опубліковані рецепти", published_recipes_path, style: "color: green; font-weight: bold;" %>
+
+<hr />
+
+<ul>
+  <% @recipes.each do |recipe| %>
+  <li>
+    <strong><%= link_to recipe.title, recipe %></strong>
+    <br />
+    Категорія: <%= recipe.category&.name || 'Без категорії' %> | 
+    Складність: <%= recipe.difficulty %> | 
+    Статус: 
+    <% if recipe.published? %>
+      Опубліковано | <%= button_to "Зняти з публікації", toggle_publish_recipe_path(recipe), method: :patch, class: "btn", form: { style: 'display:inline-block;' } %>
+    <% else %>
+      Чернетка | <%= button_to "Опублікувати", toggle_publish_recipe_path(recipe), method: :patch, class: "btn", form: { style: 'display:inline-block;' } %>
+    <% end %>
+  </li>
+  <br />
+  <% end %>
+</ul>
