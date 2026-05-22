@@ -6,17 +6,25 @@ class RecipesController < ApplicationController
   end
 
   def published
-    @recipes = Recipe.where(published: true).includes(:category)
+    @recipes = Recipe.published.includes(:category)
+  end
+
+  def quick
+    @recipes = Recipe.quick.includes(:category)
+    render :published
   end
 
   def show
+    @photo = Photo.new
   end
 
   def new
     @recipe = Recipe.new
+    @recipe.photos.build
   end
 
   def edit
+    @recipe.photos.build if @recipe.photos.empty?
   end
 
   def create
@@ -54,6 +62,9 @@ class RecipesController < ApplicationController
   end
 
   def recipe_params
-    params.require(:recipe).permit(:title, :ingredients, :steps, :cooking_time, :servings, :difficulty, :published, :category_id)
+    params.require(:recipe).permit(
+      :title, :ingredients, :steps, :cooking_time, :servings, :difficulty, :published, :category_id,
+      photos_attributes: [:id, :url, :caption, :_destroy]
+    )
   end
 end
