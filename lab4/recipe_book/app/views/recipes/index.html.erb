@@ -1,29 +1,42 @@
-<h1>Рецепти</h1>
-<table class="table table-striped table-hover mt-3">
-  <thead class="table-dark">
-    <tr>
-      <th>Назва</th>
-      <th>Категорія</th>
-      <th>Час (хв)</th>
-      <th>Складність</th>
-      <th>Статус</th>
-      <th>Дії</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @recipes.each do |recipe| %>
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h1>Всі рецепти</h1>
+</div>
+
+<div class="table-responsive shadow-sm rounded">
+  <table class="table table-hover align-middle mb-0 bg-white">
+    <thead class="table-dark">
       <tr>
-        <td><%= recipe.title %></td>
-        <td><%= recipe.category&.name %></td>
-        <td><%= recipe.cooking_time %></td>
-        <td><%= difficulty_badge(recipe) %></td>
-        <td><%= recipe.published ? 'Опубліковано' : 'Чернетка' %></td>
-        <td>
-          <%= link_to "Переглянути", recipe, class: "btn btn-sm btn-outline-primary" %>
-          <%= link_to "Редагувати", edit_recipe_path(recipe), class: "btn btn-sm btn-outline-warning" %>
-          <%= link_to "Видалити", recipe, data: { turbo_method: :delete, turbo_confirm: "Ви впевнені?" }, class: "btn btn-sm btn-danger" %>
-        </td>
+        <th class="ps-3">Назва</th>
+        <th>Категорія</th>
+        <th>Час (хв)</th>
+        <th>Складність</th>
+        <th>Статус</th>
+        <th class="text-end pe-3">Дії</th>
       </tr>
-    <% end %>
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      <% @recipes.each do |recipe| %>
+        <tr>
+          <td class="ps-3 fw-bold"><%= recipe.title %></td>
+          <td><span class="badge bg-light text-dark border"><%= recipe.category&.name || 'Без категорії' %></span></td>
+          <td><%= recipe.cooking_time %> хв</td>
+          <td><%= difficulty_badge(recipe) %></td>
+          <td>
+            <% if recipe.published %>
+              <span class="badge bg-success">Опубліковано</span>
+            <% else %>
+              <span class="badge bg-secondary">Чернетка</span>
+            <% end %>
+          </td>
+          <td class="text-end pe-3">
+            <div class="btn-group shadow-sm" role="group">
+  <%= link_to "Переглянути", recipe, class: "btn btn-sm btn-outline-primary" %>
+  <%= link_to "Редагувати", edit_recipe_path(recipe), class: "btn btn-sm btn-outline-dark" %>
+  <%= link_to "Видалити", recipe, data: { turbo_method: :delete, turbo_confirm: "Ви впевнені?" }, class: "btn btn-sm btn-outline-danger" %>
+</div>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

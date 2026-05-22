@@ -1,30 +1,63 @@
-<div class="card mt-3">
-  <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
-    <h2 class="mb-0"><%= @recipe.title %></h2>
+<div class="card mt-4 shadow-sm border-0">
+  <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center py-3">
+    <h2 class="mb-0 fs-3"><%= @recipe.title %></h2>
     <%= difficulty_badge(@recipe) %>
   </div>
   
-  <div class="card-body">
-    <p><strong>Категорія:</strong> <%= @recipe.category&.name %></p>
-    <p><strong>Час приготування:</strong> <%= @recipe.cooking_time %> хв.</p>
-    <p><strong>Порції:</strong> <%= @recipe.servings %></p>
-    <p><strong>Статус:</strong> 
-      <% if @recipe.published %>
-        <span class="text-success fw-bold">Опубліковано</span>
-      <% else %>
-        <span class="text-muted">Чернетка</span>
-      <% end %>
-    </p>
+  <div class="card-body p-4">
+    <div class="row">
+      <div class="col-md-7">
+        <div class="d-flex gap-3 mb-3">
+          <span class="badge bg-secondary fs-6"><i class="bi bi-tag"></i> <%= @recipe.category&.name || 'Без категорії' %></span>
+          <span class="badge bg-light text-dark border fs-6"> <%= @recipe.cooking_time %> хв</span>
+          <span class="badge bg-light text-dark border fs-6"> Порцій: <%= @recipe.servings %></span>
+          <% if @recipe.published %>
+            <span class="badge bg-success fs-6">Опубліковано</span>
+          <% else %>
+            <span class="badge bg-warning text-dark fs-6">Чернетка</span>
+          <% end %>
+        </div>
 
-    <h4 class="mt-4">Інгредієнти:</h4>
-    <p class="card-text"><%= @recipe.ingredients %></p>
+        <h4 class="mt-4 border-bottom pb-2 text-primary"> Інгредієнти:</h4>
+        <div class="p-3 bg-light rounded" style="white-space: pre-wrap;"><%= @recipe.ingredients %></div>
 
-    <h4 class="mt-4">Кроки приготування:</h4>
-    <p class="card-text"><%= @recipe.steps %></p>
+        <h4 class="mt-4 border-bottom pb-2 text-primary"> Кроки приготування:</h4>
+        <div class="p-3 bg-light rounded" style="white-space: pre-wrap;"><%= @recipe.steps %></div>
+      </div>
+
+      <div class="col-md-5 border-start ps-4">
+        <h4 class="text-center mb-3 text-muted"> Фотогалерея</h4>
+        
+        <% if @recipe.photos.any? %>
+          <div class="row row-cols-1 g-4 mb-4">
+            <% @recipe.photos.each do |photo| %>
+              <div class="col">
+                <div class="card h-100 border-0 shadow-sm">
+                  <img src="<%= photo.url %>" class="card-img-top rounded" alt="<%= photo.caption %>" style="height: 250px; object-fit: cover;">
+                  <% if photo.caption.present? %>
+                    <div class="card-body p-2 text-center bg-light rounded-bottom">
+                      <small class="text-dark fw-medium"><%= photo.caption %></small>
+                    </div>
+                  <% end %>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        <% else %>
+          <div class="alert alert-light text-center text-muted border py-5">
+            <h1 class="display-4 text-secondary mb-3"></h1>
+            У цього рецепту ще немає фотографій.<br>
+            <small>Ви можете додати їх, натиснувши "Редагувати рецепт".</small>
+          </div>
+        <% end %>
+      </div>
+    </div>
   </div>
   
-  <div class="card-footer">
-    <%= link_to "Редагувати", edit_recipe_path(@recipe), class: "btn btn-warning" %>
-    <%= link_to "Назад до списку", recipes_path, class: "btn btn-secondary" %>
+  <div class="card-footer bg-light p-3 d-flex justify-content-between">
+    <%= link_to "← Назад до списку", recipes_path, class: "btn btn-outline-secondary" %>
+    <div class="btn-group shadow-sm">
+      <%= link_to " Редагувати", edit_recipe_path(@recipe), class: "btn btn-dark fw-medium" %>
+    </div>
   </div>
 </div>
